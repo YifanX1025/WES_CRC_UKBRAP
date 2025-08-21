@@ -1,7 +1,7 @@
 #!/bin/bash
 # vep_docker_image.sh - Example script to save my customised VEP Docker image on UKB RAP
 # Instance type selection - mem3_ssd1_v2_x16
-# Priority: High - to avoid instance spot interruption
+# Priority: High - to avoid spot instance interruption
 # Size of Docker image: 230GB
 
 
