@@ -32,6 +32,53 @@ cpan install Bio::DB::BigFile
 
 
 # Update some plugins files
+## Loftee - choose grch38 branch to avoid some conflicts (e.g. different SQL databases and different versions of GERP conservation scores)
+cd /plugins
+git clone --single-branch --branch grch38 https://github.com/konradjk/
+
+### Copy everything in loftee folder to plugins folder
+# This is a necessary step to use loftee plugin in VEP
+cp -r /plugins/loftee/* /plugins/ # Maybe move is better
+
+### Download needed files of loftee plugins
+cd /plugins/loftee
+wget -c https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/gerp_conservation_scores.homo_sapiens.GRCh38.bw
+wget -c https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/human_ancestor.fa.gz
+wget -c https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/human_ancestor.fa.gz.fai
+wget -c https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/human_ancestor.fa.gz.gzi
+wget -c https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/loftee.sql.gz
+
+
+## CADD - I use only basic annotation database of CADD, but you can choose others including all annotations
+mkdir -p /plugins/CADD
+cd /plugins/CADD
+wget -c https://krishna.gs.washington.edu/download/CADD/v1.7/GRCh38/whole_genome_SNVs.tsv.gz
+wget -c https://krishna.gs.washington.edu/download/CADD/v1.7/GRCh38/whole_genome_SNVs.tsv.gz.tbi
+wget -c https://krishna.gs.washington.edu/download/CADD/v1.7/GRCh38/gnomad.genomes.r4.0.indel.tsv.gz
+wget -c https://krishna.gs.washington.edu/download/CADD/v1.7/GRCh38/gnomad.genomes.r4.0.indel.tsv.gz.tbi
+
+
+## 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
