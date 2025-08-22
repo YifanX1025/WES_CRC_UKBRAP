@@ -43,7 +43,7 @@ mkdir -p CADD AlphaMissense pLI SpliceAI
 
 
 ## Loftee - choose grch38 branch to avoid some conflicts (e.g. different SQL databases and different versions of GERP conservation scores)
-git clone --single-branch --branch grch38 https://github.com/konradjk/
+git clone --single-branch --branch grch38 https://github.com/konradjk/loftee.git
 
 ### Copy everything in loftee folder to plugins folder
 # This is a necessary step to use loftee plugin in VEP
