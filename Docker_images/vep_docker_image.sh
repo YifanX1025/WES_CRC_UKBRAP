@@ -56,6 +56,7 @@ wget -c https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/human_anc
 wget -c https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/human_ancestor.fa.gz.fai
 wget -c https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/human_ancestor.fa.gz.gzi
 wget -c https://personal.broadinstitute.org/konradk/loftee_data/GRCh38/loftee.sql.gz
+gunzip loftee.sql.gz
 
 
 
