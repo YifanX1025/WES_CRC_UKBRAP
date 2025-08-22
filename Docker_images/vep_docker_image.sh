@@ -78,11 +78,11 @@ wget -c https://storage.cloud.google.com/dm_alphamissense/AlphaMissense_hg38.tsv
 ## SpliceAI - Need some authencation of a website, previously downloaded files so just copy them
 ### Exit Docker container wes_vep, and copy files from project folder
 exit
-docker cp /mnt/project/vep/pLI/pLI_values.txt wes_vep:/plugins/pLI
-docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz wes_vep:/plugins/SpliceAI
-docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz.tbi wes_vep:/plugins/SpliceAI
-docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz wes_vep:/plugins/SpliceAI
-docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz.tbi wes_vep:/plugins/SpliceAI
+docker cp /mnt/project/vep/pLI/pLI_values.txt wes_vep:/plugins/pLI/
+docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz wes_vep:/plugins/SpliceAI/
+docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz.tbi wes_vep:/plugins/SpliceAI/
+docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz wes_vep:/plugins/SpliceAI/
+docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz.tbi wes_vep:/plugins/SpliceAI/
 
 
 
