@@ -90,6 +90,7 @@ chown vep:vep /plugins/pLI_values.txt
 chmod 644 /plugins/pLI_values.txt
 chown vep:vep /plugins/SpliceAI/*
 chmod 644 /plugins/SpliceAI/*
+exit
 
 
 
