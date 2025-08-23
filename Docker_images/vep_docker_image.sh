@@ -39,7 +39,7 @@ cpan install Bio::DB::BigFile
 #################### STEP3 UPDATE PLUGIN FILES ####################
 cd /plugins
 ## Create directories for plugins
-mkdir -p CADD AlphaMissense pLI SpliceAI
+mkdir -p CADD AlphaMissense SpliceAI
 
 
 ## Loftee - choose grch38 branch to avoid some conflicts (e.g. different SQL databases and different versions of GERP conservation scores)
@@ -68,17 +68,15 @@ wget -c https://krishna.gs.washington.edu/download/CADD/v1.7/GRCh38/gnomad.genom
 wget -c https://krishna.gs.washington.edu/download/CADD/v1.7/GRCh38/gnomad.genomes.r4.0.indel.tsv.gz.tbi
 
 
+
 ## AlphaMissense
-cd /plugins/AlphaMissense
-wget -c https://storage.cloud.google.com/dm_alphamissense/AlphaMissense_hg38.tsv.gz
-wget -c https://storage.cloud.google.com/dm_alphamissense/AlphaMissense_hg38.tsv.gz.tbi
-
-
 ## pLI - I've modified the pLI_values.txt myself before, just copy it
 ## SpliceAI - Need some authencation of a website, previously downloaded files so just copy them
 ### Exit Docker container wes_vep, and copy files from project folder
 exit
-docker cp /mnt/project/vep/pLI/pLI_values.txt wes_vep:/plugins/pLI/
+docker cp /mnt/project/vep/AlphaMissense/AlphaMissense_hg38.tsv.gz wes_vep:/plugins/AlphaMissense/
+docker cp /mnt/project/vep/AlphaMissense/AlphaMissense_hg38.tsv.gz.tbi wes_vep:/plugins/AlphaMissense/
+docker cp /mnt/project/vep/pLI/pLI_values.txt wes_vep:/plugins/
 docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz wes_vep:/plugins/SpliceAI/
 docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz.tbi wes_vep:/plugins/SpliceAI/
 docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz wes_vep:/plugins/SpliceAI/
