@@ -82,6 +82,15 @@ docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz.tbi we
 docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz wes_vep:/plugins/SpliceAI/
 docker cp /mnt/project/vep/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz.tbi wes_vep:/plugins/SpliceAI/
 
+### Open the writ3 permission of these files
+docker exec -u root -it wes_vep bash
+chown vep:vep /plugins/AlphaMissense/*
+chmod 644 /plugins/AlphaMissense/*
+chown vep:vep /plugins/pLI_values.txt
+chmod 644 /plugins/pLI_values.txt
+chown vep:vep /plugins/SpliceAI/*
+chmod 644 /plugins/SpliceAI/*
+
 
 
 #################### STEP4 COMMIT DOCKER CONTAINER ####################
