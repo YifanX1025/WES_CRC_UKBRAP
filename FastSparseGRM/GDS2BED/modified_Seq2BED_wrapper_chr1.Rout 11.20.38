@@ -1,0 +1,295 @@
+
+R version 4.5.0 (2025-04-11) -- "How About a Twenty-Six"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin20
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library('optparse')
+> options(stringsAsFactors=F)
+> 
+> option_list <- list(
++   make_option("--gds.file", type="character",default="",
++     help="SeqArray GDS or aGDS file name"),
++   make_option("--min.AVGDP", type="integer",default="10",
++     help="Minimum average depth"),
++   make_option("--filterCat", type="character",default="PASS",
++     help="Category of variants to select based on the filter field"),
++   make_option("--min.MAF", type="double",default="0.05",
++     help="Minimum MAF"),
++   make_option("--max.miss", type="double",default="0.05",
++     help="Maximum missingness"),
++   make_option("--removeSNPGDS", type="logical",default=TRUE,
++     help="Whether to remove the intermediate SNPGDS"),
++   make_option("--prefix.bed", type="character",default="",
++     help="Prefix of the intermediate plink BED file output")
++ )
+> 
+> parser <- OptionParser(usage="%prog [options]", option_list=option_list)
+> args <- parse_args(parser, positional_arguments = 0)
+> opt <- args$options
+> print(opt)
+$gds.file
+[1] "/Volumes/T7/WES/FastSparseGRM/chr1.gds"
+
+$min.AVGDP
+[1] 0
+
+$filterCat
+[1] "ALL"
+
+$min.MAF
+[1] 0.05
+
+$max.miss
+[1] 0.05
+
+$removeSNPGDS
+[1] TRUE
+
+$prefix.bed
+[1] "/Volumes/T7/WES/FastSparseGRM/chr1_snp"
+
+$help
+[1] FALSE
+
+> 
+> gds.file<-opt$gds.file
+> min.AVGDP<-opt$min.AVGDP
+> filterCat<-opt$filterCat
+> min.MAF<-opt$min.MAF
+> max.miss<-opt$max.miss
+> removeSNPGDS<-opt$removeSNPGDS
+> prefix.bed<-opt$prefix.bed
+> 
+> library('FastSparseGRM')
+> library('SeqArray')
+Loading required package: gdsfmt
+> library('SNPRelate')
+> 
+> print(sessionInfo())
+R version 4.5.0 (2025-04-11)
+Platform: aarch64-apple-darwin20
+Running under: macOS Sequoia 15.6.1
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+
+locale:
+[1] C/UTF-8/C/C/C/C
+
+time zone: Europe/London
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] SNPRelate_1.42.0   SeqArray_1.48.0    gdsfmt_1.44.0      FastSparseGRM_1.02
+[5] optparse_1.7.5    
+
+loaded via a namespace (and not attached):
+ [1] shape_1.4.6.1           formula.tools_1.7.1     Biobase_2.68.0         
+ [4] CompQuadForm_1.4.3      lattice_0.22-7          Rdpack_2.6.4           
+ [7] vctrs_0.6.5             tools_4.5.0             generics_0.1.4         
+[10] stats4_4.5.0            parallel_4.5.0          getopt_1.20.4          
+[13] tibble_3.3.0            pan_1.9                 pkgconfig_2.0.3        
+[16] jomo_2.7-6              Matrix_1.7-3            data.table_1.17.6      
+[19] S4Vectors_0.46.0        lifecycle_1.0.4         GenomeInfoDbData_1.2.14
+[22] compiler_4.5.0          Biostrings_2.76.0       codetools_0.2-20       
+[25] GenomeInfoDb_1.44.0     GWASExactHW_1.2         glmnet_4.1-9           
+[28] mice_3.18.0             nloptr_2.2.1            pillar_1.10.2          
+[31] crayon_1.5.3            tidyr_1.3.1             MASS_7.3-65            
+[34] reformulas_0.4.1        iterators_1.0.14        rpart_4.1.24           
+[37] GMMAT_1.4.2             boot_1.3-31             foreach_1.5.2          
+[40] mitml_0.4-5             nlme_3.1-168            tidyselect_1.2.1       
+[43] dplyr_1.1.4             purrr_1.0.4             splines_4.5.0          
+[46] operator.tools_1.6.3    grid_4.5.0              cli_3.6.5              
+[49] magrittr_2.0.3          survival_3.8-3          broom_1.0.8            
+[52] UCSC.utils_1.4.0        backports_1.5.0         logistf_1.26.1         
+[55] XVector_0.48.0          httr_1.4.7              SeqVarTools_1.46.0     
+[58] igraph_2.1.4            nnet_7.3-20             lme4_1.1-37            
+[61] rbibutils_2.3           GenomicRanges_1.60.0    IRanges_2.42.0         
+[64] mgcv_1.9-3              rlang_1.1.6             Rcpp_1.0.14            
+[67] glue_1.8.0              BiocGenerics_0.54.0     minqa_1.2.8            
+[70] jsonlite_2.0.0          R6_2.6.1               
+> 
+> # Replace Seq2SNP_wFilter with custom implementation that skips AVGDP filtering
+> print("Converting SEQ GDS to SNP GDS format...")
+[1] "Converting SEQ GDS to SNP GDS format..."
+> 
+> # Open the sequence GDS file
+> gds <- seqOpen(gds.file)
+> 
+> # Apply chr14 sample filtering
+> chr14_samples_file <- "chr14_samples.txt"
+> if(file.exists(chr14_samples_file)) {
++   print("Loading chr14 sample list...")
++   chr14_samples <- read.table(chr14_samples_file, stringsAsFactors=FALSE)[,1]
++   
++   # Get current samples in this file
++   current_samples <- seqGetData(gds, "sample.id")
++   
++   # Find intersection with chr14 samples (should be all chr14 samples if chr14 is minimal)
++   samples_to_use <- intersect(current_samples, chr14_samples)
++   
++   print(paste("Total samples in file:", length(current_samples)))
++   print(paste("Chr14 reference samples:", length(chr14_samples)))
++   print(paste("Samples to use:", length(samples_to_use)))
++   print(paste("Samples being excluded:", length(current_samples) - length(samples_to_use)))
++   
++   # Apply sample filter to match chr14
++   seqSetFilter(gds, sample.id = samples_to_use)
++   print("Sample filter applied to match chr14")
++ } else {
++   print("No chr14_samples.txt file found - using all samples")
++   print("Run extract_chr14_samples.R first to create the sample list")
++ }
+[1] "Loading chr14 sample list..."
+[1] "Total samples in file: 469555"
+[1] "Chr14 reference samples: 469392"
+[1] "Samples to use: 469392"
+[1] "Samples being excluded: 163"
+# of selected samples: 469,392
+[1] "Sample filter applied to match chr14"
+> 
+> # Check what filter categories are available
+> print("Checking available filter categories...")
+[1] "Checking available filter categories..."
+> filter_data <- seqGetData(gds, "annotation/filter")
+> filter_table <- table(filter_data)
+> print("Available filter categories:")
+[1] "Available filter categories:"
+> print(filter_table)
+filter_data
+MONOALLELIC        PASS 
+      23920           0 
+> 
+> # Apply filter category if specified
+> if(filterCat != "" && filterCat != "ALL") {
++   print(paste("Applying filter category:", filterCat))
++   
++   # Check if the requested filter category exists
++   if(filterCat %in% names(filter_table)) {
++     variant_sel <- filter_data == filterCat
++     n_selected <- sum(variant_sel, na.rm = TRUE)
++     print(paste("Number of variants with", filterCat, "filter:", n_selected))
++     
++     if(n_selected > 0) {
++       seqSetFilter(gds, variant.sel = variant_sel)
++       print("Filter applied successfully")
++     } else {
++       print(paste("WARNING: No variants found with filter category:", filterCat))
++       print("Proceeding without filter...")
++     }
++   } else {
++     print(paste("WARNING: Filter category", filterCat, "not found in data"))
++     print("Available categories are:", paste(names(filter_table), collapse=", "))
++     print("Proceeding without filter...")
++   }
++ }
+> 
+> # Convert to SNP GDS format
+> SNPgds.file <- paste0(prefix.bed, "_snp.gds")
+> print(paste("Converting to SNP GDS format:", SNPgds.file))
+[1] "Converting to SNP GDS format: /Volumes/T7/WES/FastSparseGRM/chr1_snp_snp.gds"
+> 
+> # Use seqGDS2SNP to convert from SeqArray to SNPRelate format
+> seqGDS2SNP(gds, SNPgds.file, verbose=TRUE)
+Fri Aug 29 02:14:22 2025
+SeqArray GDS to SNP GDS format:
+    # of samples: 469,392
+    # of variants: 2,283,466
+    genotype compression: LZMA_RA
+    annotation compression: LZMA_RA
+[..................................................]  0%, ETC: ---    [>.................................................]  1%, ETC: 4.6h    [=>................................................]  2%, ETC: 4.5h    [=>................................................]  3%, ETC: 4.7h    [==>...............................................]  4%, ETC: 4.7h    [==>...............................................]  5%, ETC: 4.5h    [===>..............................................]  6%, ETC: 4.6h    [===>..............................................]  7%, ETC: 4.5h    [====>.............................................]  8%, ETC: 4.5h    [====>.............................................]  9%, ETC: 4.4h    [=====>............................................] 10%, ETC: 4.3h    [=====>............................................] 11%, ETC: 4.3h    [======>...........................................] 12%, ETC: 4.2h    [======>...........................................] 13%, ETC: 4.2h    [=======>..........................................] 14%, ETC: 4.2h    [=======>..........................................] 15%, ETC: 4.1h    [========>.........................................] 16%, ETC: 4.1h    [========>.........................................] 17%, ETC: 4.0h    [=========>........................................] 18%, ETC: 3.9h    [=========>........................................] 19%, ETC: 3.9h    [==========>.......................................] 20%, ETC: 3.8h    [==========>.......................................] 21%, ETC: 3.8h    [===========>......................................] 22%, ETC: 3.7h    [===========>......................................] 23%, ETC: 3.7h    [============>.....................................] 24%, ETC: 3.6h    [============>.....................................] 25%, ETC: 3.5h    [=============>....................................] 26%, ETC: 3.5h    [=============>....................................] 27%, ETC: 3.4h    [==============>...................................] 28%, ETC: 3.4h    [==============>...................................] 29%, ETC: 3.3h    [===============>..................................] 30%, ETC: 3.3h    [===============>..................................] 31%, ETC: 3.2h    [================>.................................] 32%, ETC: 3.1h    [================>.................................] 33%, ETC: 3.1h    [=================>................................] 34%, ETC: 3.0h    [=================>................................] 35%, ETC: 3.0h    [==================>...............................] 36%, ETC: 2.9h    [==================>...............................] 37%, ETC: 2.9h    [===================>..............................] 38%, ETC: 2.9h    [===================>..............................] 39%, ETC: 2.8h    [====================>.............................] 40%, ETC: 2.8h    [====================>.............................] 41%, ETC: 2.8h    [=====================>............................] 42%, ETC: 2.7h    [=====================>............................] 43%, ETC: 2.7h    [======================>...........................] 44%, ETC: 2.7h    [======================>...........................] 45%, ETC: 2.7h    [=======================>..........................] 46%, ETC: 2.7h    [=======================>..........................] 47%, ETC: 2.6h    [========================>.........................] 48%, ETC: 2.6h    [========================>.........................] 49%, ETC: 2.5h    [=========================>........................] 50%, ETC: 2.5h    [=========================>........................] 51%, ETC: 2.5h    [==========================>.......................] 52%, ETC: 2.4h    [==========================>.......................] 53%, ETC: 2.4h    [===========================>......................] 54%, ETC: 2.3h    [===========================>......................] 55%, ETC: 2.3h    [============================>.....................] 56%, ETC: 2.2h    [============================>.....................] 57%, ETC: 2.2h    [=============================>....................] 58%, ETC: 2.1h    [=============================>....................] 59%, ETC: 2.1h    [==============================>...................] 60%, ETC: 2.0h    [==============================>...................] 61%, ETC: 2.0h    [===============================>..................] 62%, ETC: 1.9h    [===============================>..................] 63%, ETC: 1.8h    [================================>.................] 64%, ETC: 1.7h    [================================>.................] 65%, ETC: 1.7h    [=================================>................] 66%, ETC: 1.6h    [=================================>................] 67%, ETC: 1.6h    [==================================>...............] 68%, ETC: 1.5h    [==================================>...............] 69%, ETC: 1.4h    [===================================>..............] 70%, ETC: 1.4h    [===================================>..............] 71%, ETC: 1.4h    [====================================>.............] 72%, ETC: 1.3h    [====================================>.............] 73%, ETC: 1.3h    [=====================================>............] 74%, ETC: 1.2h    [=====================================>............] 75%, ETC: 1.2h    [======================================>...........] 76%, ETC: 1.1h    [======================================>...........] 77%, ETC: 1.1h    [=======================================>..........] 78%, ETC: 1.0h    [=======================================>..........] 79%, ETC: 59.6m    [========================================>.........] 80%, ETC: 57.2m    [========================================>.........] 81%, ETC: 54.4m    [=========================================>........] 82%, ETC: 51.7m    [=========================================>........] 83%, ETC: 49.0m    [==========================================>.......] 84%, ETC: 46.4m    [==========================================>.......] 85%, ETC: 43.6m    [===========================================>......] 86%, ETC: 40.9m    [===========================================>......] 87%, ETC: 38.3m    [============================================>.....] 88%, ETC: 35.5m    [============================================>.....] 89%, ETC: 32.7m    [=============================================>....] 90%, ETC: 29.7m    [=============================================>....] 91%, ETC: 26.7m    [==============================================>...] 92%, ETC: 23.7m    [==============================================>...] 93%, ETC: 20.5m    [===============================================>..] 94%, ETC: 17.6m    [===============================================>..] 95%, ETC: 14.6m    [================================================>.] 96%, ETC: 11.8m    [================================================>.] 97%, ETC: 8.9m    [=================================================>] 98%, ETC: 6.0m    [=================================================>] 99%, ETC: 3.0m    [==================================================] 100%, ETC: 0s    [==================================================] 100%, completed, 4.8h
+Done.
+Fri Aug 29 07:05:13 2025
+Optimize the access efficiency ...
+Clean up the fragments of GDS file:
+    open the file '/Volumes/T7/WES/FastSparseGRM/chr1_snp_snp.gds' (2.8G)
+    # of fragments: 31
+    save to '/Volumes/T7/WES/FastSparseGRM/chr1_snp_snp.gds.tmp'
+    rename '/Volumes/T7/WES/FastSparseGRM/chr1_snp_snp.gds.tmp' (2.8G, reduced: 192B)
+    # of fragments: 15
+Fri Aug 29 07:05:21 2025
+> 
+> # Close the sequence GDS file
+> seqClose(gds)
+> 
+> print("Conversion to SNP GDS completed.")
+[1] "Conversion to SNP GDS completed."
+> 
+> # Handle MAF and missingness filtering
+> print("Applying MAF and missingness filters...")
+[1] "Applying MAF and missingness filters..."
+> 
+> # Check if we should apply additional filters or bypass monomorphic filtering
+> if(min.MAF == 0 && max.miss == 1.0) {
++   print("Bypassing SNP2BED_wFilter due to monomorphic variants (MAF=0, max.miss=1.0)")
++   print("Converting directly to BED format...")
++   
++   # Convert directly without additional filtering using SNPRelate
++   tryCatch({
++     snpgds <- snpgdsOpen(SNPgds.file)
++     snpgdsGDS2BED(snpgds, paste0(prefix.bed, ".bed"), sample.id=NULL, snp.id=NULL, verbose=TRUE)
++     snpgdsClose(snpgds)
++     print("BED conversion completed successfully")
++     
++     # Remove intermediate SNP GDS file if requested
++     if(removeSNPGDS) {
++       file.remove(SNPgds.file)
++       print("Intermediate SNP GDS file removed")
++     }
++     
++   }, error = function(e) {
++     print(paste("Direct conversion failed:", e$message))
++     print("This is expected with monomorphic variants - no BED file can be created")
++   })
++   
++ } else {
++   # Try normal filtering
++   print(paste("Applying filters: min.MAF =", min.MAF, ", max.miss =", max.miss))
++   tryCatch({
++     SNP2BED_wFilter(SNPgds.file, min.MAF, max.miss, prefix.bed, removeSNPGDS=removeSNPGDS)
++     print("Filtering and BED conversion completed successfully")
++     
++   }, error = function(e) {
++     print(paste("SNP2BED_wFilter failed:", e$message))
++     print("This typically means all variants were filtered out")
++     print("Consider relaxing your filtering criteria or using different data")
++     
++     # Clean up
++     if(removeSNPGDS && file.exists(SNPgds.file)) {
++       file.remove(SNPgds.file)
++       print("Intermediate SNP GDS file removed")
++     }
++   })
++ }
+[1] "Applying filters: min.MAF = 0.05 , max.miss = 0.05"
+Excluding 0 SNP on non-autosomes
+Excluding 2,270,273 SNPs (monomorphic: TRUE, MAF: 0.05, missing rate: 0.95)
+Converting from GDS to PLINK binary PED:
+Working space: 469392 samples, 13193 SNPs
+[1] "SNP2BED_wFilter failed: arguments imply differing number of rows: 13193, 14183"
+[1] "This typically means all variants were filtered out"
+[1] "Consider relaxing your filtering criteria or using different data"
+[1] "Intermediate SNP GDS file removed"
+> 
+> print("Process completed!")
+[1] "Process completed!"
+> 
+> proc.time()
+     user    system   elapsed 
+16521.900   156.842 18319.078 
