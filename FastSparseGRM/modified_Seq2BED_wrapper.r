@@ -1,3 +1,5 @@
+# Select the overlapping samples in each GDS file, based on samples from chr14 GDS file.
+
 library('optparse')
 options(stringsAsFactors=F)
 
