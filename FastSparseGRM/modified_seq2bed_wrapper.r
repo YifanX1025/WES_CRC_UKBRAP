@@ -1,3 +1,7 @@
+## This is for skipping the min.AVGDP because I have not extracted FORMAT/DP data from the raw exome sequencing data.
+## I have extracted variants with DP>=10 and GQ>=20, so no need to use them here.
+## Just use --min.AVGDP 0 and --filterCat ALL
+
 library('optparse')
 options(stringsAsFactors=F)
 
