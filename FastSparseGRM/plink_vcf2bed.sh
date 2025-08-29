@@ -1,5 +1,24 @@
 #!/bin/bash
 
+
+
+# The sample numbers are different in each chromosome VCF file.
+# In chr 1-3,5,7,11,13,18-22, there are 469,555 samples.
+# In chr 4,6,8-10,12,14-17, there are 469,392 samples.
+# Select the less one, 469,392 samples .
+# Extract the smallest GDS file which has 469,392 samples, chr14.
+
+
+
+
+
+
+
+
+
+
+
+
 # Batch process chromosomes 1-22
 for CHR in {1..22}
 do
