@@ -55,8 +55,8 @@ for CHR in {1..22}; do
   plink --vcf ukb23157_c${CHR}_merged_v1_staar_trimmed.vcf.gz \
         --vcf-half-call missing \
         --keep chr14_samples_plink.txt \
-        --maf 0.01 \ # Keep MAF>=0.01, WES data is limited compared to WGS data, so 0.05 is too strict for the finding out ~200,000 variants
-        --geno 0.1 \ # max.missing default is 0.05
+        --maf 0.01 \ # Keep MAF>=0.01, WES data is limited compared to WGS data, so 0.05 is too strict for the finding out ~200,000 variants, can try 0.05 on WGS
+        --geno 0.1 \ # max.missing default is 0.05, try 0.05 on WGS
         --make-bed \
         --out chr${CHR}_filtered
   
