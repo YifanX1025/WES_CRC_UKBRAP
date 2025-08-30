@@ -57,7 +57,7 @@ except CalledProcessError:
     sys.exit(1)
 
 # Define chromosomes to process (1-22)
-chromosomes = list(range(1, 22))
+chromosomes = list(range(1, 23))
 print(f"Processing {len(chromosomes)} chromosomes: {chromosomes}")
 
 # Process each chromosome
