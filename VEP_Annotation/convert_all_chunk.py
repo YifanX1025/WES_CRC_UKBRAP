@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# This is for smaller memory - cut the file into chunks
 
 import pandas as pd
 import gzip
