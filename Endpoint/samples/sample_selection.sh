@@ -1,4 +1,9 @@
 #!bin/bash
+# This bash script is for sample selection: the intersection between GRM, WES and phenotype.
+# Previously I made the intersection of WES and GRM genotype data.
+# Now I need to find the intersection of previous one and phenotype.
+# My phenotype samples include 10,965 CRC cases (incident + prevalent) and 373,573 non-cancer controls.
+
 
 # 1) Extract IDs
 ## Grab EIDs where cancer_case == 0 (controls)
