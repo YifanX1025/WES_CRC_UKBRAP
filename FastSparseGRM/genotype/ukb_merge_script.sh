@@ -73,31 +73,8 @@ dx run swiss-army-knife \
   -iin="CRC WGS:/GRM/keep.plink.txt" \
   -y --brief \
   -icmd="
-    # Create merge list for PLINK
-    echo 'Creating merge list...' &&
-    
-    # Create list of chromosome files for merging (excluding chr1 as base)
-    for chr in {2..22}; do
-        echo \'ukb_qc_filtered_c\${chr}\' >> merge_list.txt
-    done &&
-    
-    # Merge all chromosomes using PLINK
-    echo 'Merging chromosomes 1-22...'
-    plink --bfile ukb_qc_filtered_c1 \
-          --merge-list merge_list.txt \
-          --keep keep.plink.txt \
-          --make-bed \
-          --out chrall &&
-    
-    echo 'Merge completed!' &&
-    
-    # Optional: Generate summary statistics
-    echo 'Generating summary...' &&
-    plink --bfile chrall \
-          --freq \
-          --missing \
-          --hardy \
-          --out chrall_qc
+  for i in {1..22}; do echo ukb_qc_filtered_c${i} >> mergeBED.list; done && 
+  plink --merge-list mergeBED.list --make-bed --out chrall
   " \
   --instance-type mem1_ssd1_v2_x8 \
   --name "UKB_merge_chr1-22_filtered" \
