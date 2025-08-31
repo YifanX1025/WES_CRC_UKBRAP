@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 # This bash script is for sample selection: the intersection between GRM, WES and phenotype.
 # Previously I made the intersection of WES and GRM genotype data.
 # Now I need to find the intersection of previous one and phenotype.
