@@ -71,10 +71,11 @@ dx run swiss-army-knife \
   -iin="CRC WGS:/GRM/chr22/ukb_qc_filtered_c22.bim" \
   -iin="CRC WGS:/GRM/chr22/ukb_qc_filtered_c22.fam" \
   -iin="CRC WGS:/GRM/keep.plink.txt" \
+  -iin="CRC WGS:/GRM/mergeBED.list"\
   -y --brief \
   -icmd="
-  for i in {1..22}; do echo ukb_qc_filtered_c${i} >> mergeBED.list; done && 
-  plink --merge-list mergeBED.list --make-bed --out chrall
+  plink --merge-list mergeBED.list --keep keep.plink.txt --make-bed --out chrall && 
+  plink --bfile chrall --freq --missing --hardy --out chrall_qc
   " \
   --instance-type mem1_ssd1_v2_x8 \
   --name "UKB_merge_chr1-22_filtered" \
