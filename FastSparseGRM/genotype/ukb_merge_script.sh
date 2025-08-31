@@ -100,4 +100,5 @@ dx run swiss-army-knife \
           --out chrall_qc
   " \
   --instance-type mem1_ssd1_v2_x8 \
-  --name "UKB_merge_chr1-22_filtered"
+  --name "UKB_merge_chr1-22_filtered" \
+  --destination "CRC\ WGS:/GRM/"
