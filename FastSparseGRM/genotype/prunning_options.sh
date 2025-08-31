@@ -28,6 +28,12 @@ dx run swiss-army-knife \
   
   # Option 3: Very relaxed for ~200K variants
   plink --bfile chrall --indep-pairwise 200 20 0.5 --out chrall.pruned_r05 &&
+# 200 (window size in kb): PLINK examines variants within a 200 kilobase sliding window along each chromosome. 
+# This is the physical distance range it considers when calculating linkage disequilibrium between variants.
+# 20 (step size in variant count): After processing each window, PLINK moves forward by 20 variants before analyzing the next window. 
+# This creates overlapping windows that ensure no variant pairs are missed.
+# 0.5 (r² threshold): This is the linkage disequilibrium cutoff. PLINK removes one variant from any pair that has an r² correlation above 0.5. 
+# An r² of 0.5 means the variants share 50% of their genetic information - they're moderately correlated but not highly redundant.
   
   # Check variant count
   wc -l chrall.pruned_r05.prune.in && 
