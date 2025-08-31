@@ -28,9 +28,19 @@ dx run swiss-army-knife \
   -iin="CRC WGS:/UKB_500k_WGS_aGDS/ukb.500k.wgs.chr22.pass.annotated.gds" \
   -iin="CRC WGS:/UKB_500k_WGS_aGDS/keep.ids" \
   -y --brief \
-  -icmd='
-    # Load required R libraries and process GDS files
-    Rscript -e "
+  -icmd="
+    # Install required R packages and process GDS files
+    Rscript -e '
+    # Install required packages
+    if (!require(BiocManager, quietly = TRUE)) {
+      install.packages(\"BiocManager\", repos=\"https://cloud.r-project.org\")
+    }
+    BiocManager::install(c(\"SeqArray\", \"gdsfmt\"), ask=FALSE)
+    
+    if (!require(data.table, quietly = TRUE)) {
+      install.packages(\"data.table\", repos=\"https://cloud.r-project.org\")
+    }
+    
     library(SeqArray)
     library(data.table)
     
@@ -47,7 +57,7 @@ dx run swiss-army-knife \
       })
       
       keep_ids <- as.character(keep_samples[[1]])
-      cat(\"Number of samples to keep:\", length(keep_ids), \"\n\")
+      cat(\"Number of samples to keep:\", length(keep_ids), \"\\n\")
     } else {
       stop(\"Could not find keep.ids file\")
     }
@@ -61,25 +71,25 @@ dx run swiss-army-knife \
                          full.names=TRUE, recursive=TRUE)[1]
       
       if (is.na(input_file) || !file.exists(input_file)) {
-        cat(\"Warning: Could not find GDS file for chromosome\", chr, \"\n\")
+        cat(\"Warning: Could not find GDS file for chromosome\", chr, \"\\n\")
         next
       }
       
-      cat(\"Found file:\", basename(input_file), \"\n\")
+      cat(\"Found file:\", basename(input_file), \"\\n\")
       
       # Open the GDS file
       gds <- seqOpen(input_file, readonly=TRUE)
       
       # Get all sample IDs in the file
       all_samples <- seqGetData(gds, \"sample.id\")
-      cat(\"Total samples in chr\", chr, \":\", length(all_samples), \"\n\")
+      cat(\"Total samples in chr\", chr, \":\", length(all_samples), \"\\n\")
       
       # Find samples that are in both the GDS file and keep list
       samples_to_keep <- intersect(all_samples, keep_ids)
-      cat(\"Samples to keep for chr\", chr, \":\", length(samples_to_keep), \"\n\")
+      cat(\"Samples to keep for chr\", chr, \":\", length(samples_to_keep), \"\\n\")
       
       if (length(samples_to_keep) == 0) {
-        cat(\"Warning: No samples to keep for chromosome\", chr, \"\n\")
+        cat(\"Warning: No samples to keep for chromosome\", chr, \"\\n\")
         seqClose(gds)
         next
       }
@@ -92,21 +102,21 @@ dx run swiss-army-knife \
       
       # Get variant count after filtering
       n_variants <- length(seqGetData(gds, \"variant.id\"))
-      cat(\"Variants in filtered chr\", chr, \":\", n_variants, \"\n\")
+      cat(\"Variants in filtered chr\", chr, \":\", n_variants, \"\\n\")
       
       # Export filtered GDS
-      cat(\"Exporting filtered file...\n\")
+      cat(\"Exporting filtered file...\\n\")
       seqExport(gds, output_file, fmt=\"gds\", verbose=TRUE)
       
       # Close the file
       seqClose(gds)
       
-      cat(\"Completed chromosome\", chr, \"- Output:\", output_file, \"\n\")
+      cat(\"Completed chromosome\", chr, \"- Output:\", output_file, \"\\n\")
     }
     
     cat(\"\\nSample filtering completed for all chromosomes\\n\")
-    "
-  ' \
+    '
+  " \
   --instance-type mem3_ssd1_v2_x16 \
   --name "UKB_GDS_sample_filter" \
   --destination "CRC\ WGS:/UKB_500k_WGS_aGDS/filtered/"
