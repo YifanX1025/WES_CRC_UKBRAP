@@ -46,6 +46,7 @@ fi
 
 # 4) (Optional) also create a PLINK --keep (FID IID) from the same set
 awk '{print $1, $1}' keep.ids > keep.plink.txt
+awk '{print $1}' keep.ids > keep.txt
 
 # 5) Quick counts
 echo "phenotype IDs:  $(wc -l < pheno.ids)"
