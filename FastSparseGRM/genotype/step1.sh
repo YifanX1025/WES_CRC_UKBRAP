@@ -12,7 +12,7 @@ dx run swiss-army-knife \
     cd /home/dnanexus/out/out && cp ./FastSparseGRM/extdata/king . &&
     chmod +x king && ./king -b chrall_pruned.bed --ibdseg --degree 4 --cpus 24 --prefix output
   " \
+  --priority high \
   --instance-type mem2_ssd1_v2_x32 \
   --name "GRM_step1" \
-  --destination "CRC\ WGS:/GRM/" \
-  --priority high
+  --destination "CRC\ WGS:/GRM/"
