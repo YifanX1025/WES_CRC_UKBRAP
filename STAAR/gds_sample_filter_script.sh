@@ -31,18 +31,8 @@ dx run swiss-army-knife \
   -icmd="
     # Install required R packages and process GDS files
     Rscript -e '
-    # Install required packages with correct Bioconductor version
-    if (!require(BiocManager, quietly = TRUE)) {
-      install.packages(\"BiocManager\", repos=\"https://cloud.r-project.org\")
-    }
-    
-    # Use version 3.20 which is compatible with R 4.4
-    BiocManager::install(version = \"3.20\")
-    BiocManager::install(c(\"SeqArray\", \"gdsfmt\"), ask=FALSE, update=FALSE)
-    
-    if (!require(data.table, quietly = TRUE)) {
-      install.packages(\"data.table\", repos=\"https://cloud.r-project.org\")
-    }
+    # Install required packages directly from CRAN
+    install.packages(c(\"SeqArray\", \"gdsfmt\", \"data.table\"), repos=\"https://cloud.r-project.org\")
     
     library(SeqArray)
     library(data.table)
