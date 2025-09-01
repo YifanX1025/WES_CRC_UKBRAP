@@ -31,17 +31,17 @@ dx run swiss-army-knife \
   -icmd="
     # Install required R packages and process GDS files
     Rscript -e '
-    # Install BiocManager if missing
-    if (!requireNamespace("BiocManager", quietly = TRUE))
-      install.packages("BiocManager", repos="https://cloud.r-project.org")
+    # Install BiocManager if missing (note the quotes)
+    if (!requireNamespace(\"BiocManager\", quietly = TRUE)) {
+      install.packages(\"BiocManager\", repos = \"https://cloud.r-project.org\")
+    }
 
-    # Install required Bioconductor packages for R 4.4 (Bioc 3.20)
-    BiocManager::install(c("SeqArray", "gdsfmt"),
-                         version = "3.20",
-                         ask = FALSE, update = FALSE)
-    
-    # Install required packages
-    BiocManager::install(c(\"SeqArray\", \"gdsfmt\", \"data.table\"), ask = FALSE)
+    # Install Bioconductor packages for R 4.4 (Bioc 3.20) — quotes + version as a string
+    BiocManager::install(
+      c(\"SeqArray\", \"gdsfmt\", \"data.table\"),
+      version = \"3.20\",
+      ask = FALSE, update = FALSE
+    )
     
     library(SeqArray)
     library(data.table)
