@@ -82,7 +82,8 @@ dx run swiss-army-knife \
     \$R_HOME/bin/Rscript -e \"
     library(SeqArray)
     library(data.table)
-    
+
+    setwd('/home/dnanexus/out/out')
     # Read the keep list - handle different possible formats
     keep_file <- list.files(pattern='keep.ids', full.names=TRUE, recursive=TRUE)[1]
     
@@ -158,4 +159,5 @@ dx run swiss-army-knife \
   " \
   --instance-type mem3_ssd1_v2_x16 \
   --name "UKB_GDS_sample_filter" \
-  --destination "CRC\ WGS:/UKB_500k_WGS_aGDS/filtered/"
+  --destination "CRC\ WGS:/UKB_500k_WGS_aGDS/filtered/" \
+  --priority high
