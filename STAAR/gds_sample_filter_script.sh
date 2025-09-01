@@ -31,8 +31,17 @@ dx run swiss-army-knife \
   -icmd="
     # Install required R packages and process GDS files
     Rscript -e '
-    # Install required packages directly from CRAN
-    install.packages(c(\"SeqArray\", \"gdsfmt\", \"data.table\"), repos=\"https://cloud.r-project.org\")
+    # Install BiocManager first
+    if (!requireNamespace(\"BiocManager\", quietly = TRUE))
+        install.packages(\"BiocManager\", repos = \"https://cloud.r-project.org\")
+    
+    # Install data.table from CRAN
+    if (!requireNamespace(\"data.table\", quietly = TRUE))
+        install.packages(\"data.table\", repos = \"https://cloud.r-project.org\")
+    
+    # Set BiocManager to not prompt and use compatible version
+    options(BioC_mirror = \"https://bioconductor.org\")
+    BiocManager::install(c(\"SeqArray\", \"gdsfmt\"), ask = FALSE, update = FALSE, force = TRUE)
     
     library(SeqArray)
     library(data.table)
