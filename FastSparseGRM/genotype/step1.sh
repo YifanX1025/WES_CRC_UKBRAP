@@ -8,7 +8,6 @@ dx run swiss-army-knife \
   -icmd="
     apt-get update && apt-get -y install git && 
     git clone https://github.com/rounakdey/FastSparseGRM.git && 
-    R CMD INSTALL FastSparseGRM && 
     cd /home/dnanexus/out/out && cp ./FastSparseGRM/extdata/king . &&
     chmod +x king && ./king -b chrall_pruned.bed --ibdseg --degree 4 --cpus 24 --prefix output
   " \
