@@ -16,7 +16,7 @@ dx run swiss-army-knife \
         # Run the divergence calculation
         R CMD BATCH --vanilla "--args --prefix.in chrall_pruned --file.seg output --num_threads 32 --degree 4 --divThresh -0.02209709 --nRandomSNPs 50000 --prefix.out output.divergence" getDivergence_wrapper.R getDivergence.Rout
   ' \
-  --instance-type mem1_ssd1_v2_x32 \
+  --instance-type mem1_ssd1_v2_x36 \
   --name "GRM_step2" \
   --destination "CRC WGS:/GRM/" \
   --priority high
