@@ -19,4 +19,5 @@ dx run swiss-army-knife \
   " \
   --instance-type mem1_ssd1_v2_x32 \
   --name "GRM_step2" \
-  --destination "CRC WGS:/GRM/"
+  --destination "CRC WGS:/GRM/" \
+  --priority high
