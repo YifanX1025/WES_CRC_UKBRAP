@@ -8,7 +8,6 @@ dx run swiss-army-knife \
   -iin="CRC WGS:/GRM/output.segments.gz" \
   -iin="CRC WGS:/GRM/outputallsegs.txt" \
   -iin="CRC WGS:/GRM/FastSparseGRM/extdata/getDivergence_wrapper.R" \
-  -iin="CRC WGS:/GRM/" \
   -y --brief \
   -icmd="
         # Install R packages
