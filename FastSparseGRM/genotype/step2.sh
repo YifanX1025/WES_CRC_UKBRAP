@@ -23,7 +23,7 @@ dx run swiss-army-knife \
     " &&
     pwd && ls -la && cd /home/dnanexus/out/out && 
     # Run the divergence calculation
-    R CMD BATCH --vanilla "--args --prefix.in chrall_pruned --file.seg output --num_threads 24 --degree 4 --divThresh -0.02209709 --nRandomSNPs 50000 --prefix.out output.divergence" getDivergence_wrapper.R getDivergence.Rout && 
+    R CMD BATCH --vanilla "--args --prefix.in chrall_pruned --file.seg output.seg --num_threads 24 --degree 4 --divThresh -0.02209709 --nRandomSNPs 50000 --prefix.out output.divergence" getDivergence_wrapper.R getDivergence.Rout && 
     tail -n 200 getDivergence.Rout || true
   ' \
   --instance-type mem2_ssd1_v2_x32 \
