@@ -7,9 +7,9 @@ dx run swiss-army-knife \
   -iin="CRC WGS:/GRM/output.seg" \
   -iin="CRC WGS:/GRM/output.segments.gz" \
   -iin="CRC WGS:/GRM/outputallsegs.txt" \
-  -iin="CRC WGS:/GRM/" \
-  -iin="CRC WGS:/GRM/" \
-  -iin="CRC WGS:/GRM/" \
+  -iin="CRC WGS:/GRM/output.divergence.div" \
+  -iin="CRC WGS:/GRM/output.unrelated.unrels" \
+  -iin="CRC WGS:/GRM/output.pca.score" \
   -iin="CRC WGS:/GRM/FastSparseGRM/extdata/calcSparseGRM_wrapper.R" \
   -y --brief \
   -icmd='
