@@ -112,9 +112,9 @@ docker images
 apt-get update
 apt-get install -y pv
 ## Save Docker image
-docker save my_vep_complete:v1.0 | pv | gzip > my_vep_complete_v1.0.tar.gz
+docker save my_vep_complete:v3.0 | pv | gzip > my_vep_complete_v3.0.tar.gz
 ## After all done, upload the image to my UKB project
-dx upload my_vep_complete_v1.0.tar.gz --destination projectID:/vep/images/
+dx upload my_vep_complete_v3.0.tar.gz --destination CRC\ WGS:/vep/images/
 
 
 echo "Done!"
