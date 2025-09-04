@@ -4,9 +4,7 @@ dx run swiss-army-knife \
   -iin="CRC WGS:/GRM/chrall_pruned.bed" \
   -iin="CRC WGS:/GRM/chrall_pruned.bim" \
   -iin="CRC WGS:/GRM/chrall_pruned.fam" \
-  -iin="CRC WGS:/GRM/" \
-  -iin="CRC WGS:/GRM/" \
-  -iin="CRC WGS:/GRM/" \
+  -iin="CRC WGS:/GRM/output.unrelated.unrels" \
   -iin="CRC WGS:/GRM/FastSparseGRM/extdata/runPCA_wrapper.R" \
   -y --brief \
   -icmd='
