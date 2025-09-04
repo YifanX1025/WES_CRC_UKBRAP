@@ -25,9 +25,9 @@ dx run swiss-army-knife \
     pwd && ls -la && cd /home/dnanexus/out/out && 
     # Run the divergence calculation
     R CMD BATCH --vanilla '--args --prefix.in chrall_pruned --file.seg output.seg --degree 4 --file.div output.divergence.div --file.include \"\" --prefix.out output.unrelated' extractUnrelated_wrapper.R extractUnrelated.Rout && 
-    tail -n 200 getDivergence.Rout || true
+    tail -n 200 extractUnrelated.Rout || true
   ' \
   --instance-type mem2_ssd1_v2_x32 \
-  --name "GRM_step2" \
+  --name "GRM_step3" \
   --destination "CRC WGS:/GRM/" \
   --priority high
