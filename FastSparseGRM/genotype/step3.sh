@@ -7,9 +7,7 @@ dx run swiss-army-knife \
   -iin="CRC WGS:/GRM/output.seg" \
   -iin="CRC WGS:/GRM/output.segments.gz" \
   -iin="CRC WGS:/GRM/outputallsegs.txt" \
-  -iin="CRC WGS:/GRM/" \
-  -iin="CRC WGS:/GRM/" \
-  -iin="CRC WGS:/GRM/" \
+  -iin="CRC WGS:/GRM/output.divergence.div" \
   -iin="CRC WGS:/GRM/FastSparseGRM/extdata/extractUnrelated_wrapper.R" \
   -y --brief \
   -icmd='
@@ -26,7 +24,7 @@ dx run swiss-army-knife \
     " &&
     pwd && ls -la && cd /home/dnanexus/out/out && 
     # Run the divergence calculation
-    R CMD BATCH --vanilla '--args --prefix.in chrall_pruned --file.seg output.seg --degree 4 --file.div output.divergence.div --file.include --prefix.out output.unrelated' extractUnrelated_wrapper.R extractUnrelated.Rout && 
+    R CMD BATCH --vanilla '--args --prefix.in chrall_pruned --file.seg output.seg --degree 4 --file.div output.divergence.div --file.include \"\" --prefix.out output.unrelated' extractUnrelated_wrapper.R extractUnrelated.Rout && 
     tail -n 200 getDivergence.Rout || true
   ' \
   --instance-type mem2_ssd1_v2_x32 \
