@@ -4,6 +4,9 @@ dx run swiss-army-knife \
   -iin="CRC WGS:/GRM/chrall_pruned.bed" \
   -iin="CRC WGS:/GRM/chrall_pruned.bim" \
   -iin="CRC WGS:/GRM/chrall_pruned.fam" \
+  -iin="CRC WGS:/GRM/output.seg" \
+  -iin="CRC WGS:/GRM/output.segments.gz" \
+  -iin="CRC WGS:/GRM/outputallsegs.txt" \
   -iin="CRC WGS:/GRM/" \
   -iin="CRC WGS:/GRM/" \
   -iin="CRC WGS:/GRM/" \
