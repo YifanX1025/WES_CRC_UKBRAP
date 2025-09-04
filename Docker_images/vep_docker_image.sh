@@ -100,7 +100,7 @@ docker commit \
   --message "VEP with loftee, CADD, AlphaMissense, pLI and SpliceAI" \
   --author "example <example@example.com>" \
   wes_vep \
-  my_vep_complete:v1.0
+  my_vep_complete:v3.0 ## Version 3
 
 
 
