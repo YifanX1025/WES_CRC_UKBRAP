@@ -1,0 +1,202 @@
+# Based on drarwood/vcf2agds_overview, but modify something
+[link: https://github.com/drarwood/vcf_to_gds_overview/blob/master/get_vcf_file_list_by_chr_and_split.sh]
+
+#!/bin/bash
+
+##### Install DNAnexus Platform SDK
+# Open anaconda prompt:
+pip3 install dxpy
+#pip3 install --upgrade dxpy
+
+##### Log in
+cd /path_to_dx_toolkit/
+source dx-toolkit-0.381.0/environment
+cd dx-toolkit-0.381.0/bin
+dx login
+#dx ls (here we assume to have a project named UKB_500k_WGS)
+
+
+##### Step 1: Trimming down data in the VCFs for WES data
+# Method 1: Dynamic discovery approach
+echo "=== Method 1: Dynamic Discovery Approach ==="
+echo "Discovering all batch files across chromosomes..."
+
+for chr in {1..22}; do
+    echo "Processing chromosome ${chr}..."
+    
+    # List all batch files for this chromosome to find the maximum batch number
+    batch_files=$(dx ls "project-GyJ14jjJxy674xQ2pGQ5G3K6:/Bulk/Exome sequences/Population level exome OQFE variants, pVCF format - final release/" | grep "ukb23157_c${chr}_b.*_v1.vcf.gz$")
+    
+    if [ -z "$batch_files" ]; then
+        echo "Warning: No batch files found for chromosome ${chr}"
+        continue
+    fi
+    
+    # Extract batch numbers and find the maximum
+    max_batch=$(echo "$batch_files" | grep -o "ukb23157_c${chr}_b[0-9]*_v1.vcf.gz" | grep -o "b[0-9]*" | sed 's/b//' | sort -n | tail -1)
+    
+    if [ -z "$max_batch" ]; then
+        echo "Warning: Could not determine max batch for chromosome ${chr}"
+        continue
+    fi
+    
+    echo "Chromosome ${chr}: Found batches b0 to b${max_batch}"
+    
+    # Process all batches for this chromosome
+    for batch in $(seq 0 $max_batch); do
+        echo "Submitting job for chromosome ${chr}, batch ${batch}..."
+        
+        dx run swiss-army-knife \
+            --instance-type mem2_ssd1_v2_x4 \
+            -y --brief \
+            -iin="project-GyJ14jjJxy674xQ2pGQ5G3K6:/Bulk/Exome sequences/Population level exome OQFE variants, pVCF format - final release/ukb23157_c${chr}_b${batch}_v1.vcf.gz" \
+            -icmd="
+            echo 'Starting STAAR-optimized WES trimming for single VCF file...'
+            
+            vcf_path=\"project-GyJ14jjJxy674xQ2pGQ5G3K6:/Bulk/Exome sequences/Population level exome OQFE variants, pVCF format - final release/ukb23157_c${chr}_b${batch}_v1.vcf.gz\"
+            filename=\"ukb23157_c${chr}_b${batch}_v1\"
+            
+            echo \"Processing: \$vcf_path\"
+            
+            dx cat \"\$vcf_path\" | \
+            bcftools view \
+                --include 'FORMAT/DP>=10 && FORMAT/GQ>=20' \
+                --min-ac 1 \
+                --output-type z | \
+            bcftools annotate \
+                --remove 'INFO,FORMAT,^INFO/AC,^INFO/AN,^INFO/AF,^FORMAT/GT,^FORMAT/DP' \
+                --output-type z \
+                --output \"\${filename}_staar_trimmed.vcf.gz\"
+                
+            bcftools index -t \"\${filename}_staar_trimmed.vcf.gz\"
+            echo \"Completed: \$filename\"
+            
+            echo 'STAAR-optimized trimming completed!'
+            ls -lh *.vcf.gz*
+            " \
+            --destination "CRC WGS:/Step1_WES_vcf_trimmed_500K" \
+            --tag "wes_staar_chr${chr}_b${batch}_x4" \
+            --property pipeline=STAAR \
+            --property file="ukb23157_c${chr}_b${batch}_v1"
+    done
+    
+    echo "Completed chromosome ${chr} (batches 0-${max_batch})"
+    echo "----------------------------------------"
+done
+
+echo "All chromosomes and batches submitted for processing!"
+
+echo ""
+echo "=== Alternative Method 2: Direct File Discovery ==="
+echo "# Uncomment and use this approach if you prefer to process all files directly:"
+echo "# This method discovers all files matching the pattern and processes them:"
+echo ""
+echo "# dx ls 'project-GyJ14jjJxy674xQ2pGQ5G3K6:/Bulk/Exome sequences/Population level exome OQFE variants, pVCF format - final release/' | \\"
+echo "# grep 'ukb23157_c[0-9]*_b[0-9]*_v1.vcf.gz$' | \\"
+echo "# while read -r filename; do"
+echo "#     # Extract chromosome and batch from filename"
+echo "#     chr=\$(echo \"\$filename\" | grep -o 'c[0-9]*' | sed 's/c//')"
+echo "#     batch=\$(echo \"\$filename\" | grep -o 'b[0-9]*' | sed 's/b//')"
+echo "#     base_name=\$(echo \"\$filename\" | sed 's/.vcf.gz$//')"
+echo "#     "
+echo "#     echo \"Processing: \$filename (chr=\$chr, batch=\$batch)\""
+echo "#     "
+echo "#     dx run swiss-army-knife \\"
+echo "#         --instance-type mem2_ssd1_v2_x4 \\"
+echo "#         -y --brief \\"
+echo "#         -iin=\"project-GyJ14jjJxy674xQ2pGQ5G3K6:/Bulk/Exome sequences/Population level exome OQFE variants, pVCF format - final release/\$filename\" \\"
+echo "#         -icmd=\"[same command as above with \$base_name]\" \\"
+echo "#         --destination \"CRC WGS:/Step1_WES_vcf_trimmed_500K\" \\"
+echo "#         --tag \"wes_staar_chr\${chr}_b\${batch}_x4\" \\"
+echo "#         --property pipeline=STAAR \\"
+echo "#         --property file=\"\$base_name\""
+echo "# done"
+
+
+
+##### Step 2: Merging VCFs on my local machine
+for chr in {1..22}; do
+    ls ukb23157_c${chr}_b*_v1_staar_trimmed.vcf.gz | sort -t"b" -k3.1 -n > chr${chr}_files.txt
+    
+    first_file=$(head -n1 chr${chr}_files.txt)
+    n_samples=$(bcftools query -l "$first_file" | wc -l)
+    seq 1 $n_samples | sed 's/^/sample_/' > standard_samples.txt
+
+    renamed_files=()
+    while read -r file; do
+        renamed_file="renamed_$(basename "$file")"
+        bcftools reheader -s standard_samples.txt "$file" > "$renamed_file"
+        renamed_files+=("$renamed_file")
+    done < chr${chr}_files.txt
+    
+    printf '%s\n' "${renamed_files[@]}" > chr${chr}_renamed_files.txt
+    
+    bcftools concat \
+        --file-list chr${chr}_renamed_files.txt \
+        --output-type z \
+        --output ukb23157_c${chr}_merged_v1_staar_trimmed.vcf.gz
+    
+    bcftools index -t ukb23157_c${chr}_merged_v1_staar_trimmed.vcf.gz
+    
+    rm chr${chr}_files.txt chr${chr}_renamed_files.txt standard_samples.txt
+    rm renamed_ukb23157_c${chr}_b*_v1_staar_trimmed.vcf.gz
+done
+
+
+##### Step 3: Converting VCF to SeqArray GDS for subsequent annotation in the FAVOR database (vcf2gds)
+# Clone this github repo to a local directory:
+git clone https://github.com/drarwood/vcf2gds
+
+# Navigate to a relevant directory within the project directory on the DNAnexus platform
+dx cd CRC\ WGS:/
+
+# Now you are ready to build and upload the applet to the DNAnexus platform directory
+dx build -f vcf2gds
+
+# Create a new folder under the project directory (Step3_gds_500k)
+
+dx cd UKB_500k_WGS:/Step3_gds_500k
+
+for CHR in {1..2} {4..4} {6..6} {8..8}
+do
+  dx run CRC\ WGS:/vcf2gds \
+    -ivcf_file=CRC\ WGS:/Step2_vcf_merged_500k/ukb23157_c${CHR}_merged_v1_staar_trimmed.vcf.gz \
+    -igds_filename=chr${CHR}.gds \
+    -iparallel=30 \
+    --priority high \
+    --instance-type="mem1_ssd1_v2_x36"\
+    -y
+done
+
+for CHR in {3..3} {5..5} {7..7} {9..22}
+do
+  dx run CRC\ WGS:/vcf2gds \
+    -ivcf_file=CRC\ WGS:/Step2_vcf_merged_500k/ukb23157_c${CHR}_merged_v1_staar_trimmed.vcf.gz \
+    -igds_filename=chr${CHR}.gds \
+    -iparallel=16 \
+    --priority high \
+    --instance-type="mem2_ssd1_v2_x16"\
+    -y
+done
+
+
+##### Step 4: Annotating GDS to aGDS for subsequent association analysis in the STAARpipeline (favorannotator)
+# Clone this github repo to some directory:
+git clone https://github.com/li-lab-genetics/favorannotator-rap.git
+
+# Navigate to a relevant directory within the project directory on the DNAnexus platform
+dx cd CRC\ WGS:/
+
+# Compile the source code:
+dx build -f favorannotator-rap
+
+# Create a new folder under the project directory (UKB_500k_WGS_aGDS)
+for CHR in {1..22}
+do
+  dx run CRC\ WGS:/favorannotator \
+  -igds_file=CRC\ WGS:/Step3_gds_500k/chr${CHR}.gds \
+  -ichromosome=${CHR} \
+  -iuse_compression=NO \
+  -ioutfile=ukb.500k.wgs.chr${CHR}.pass.annotated \
+  --destination=CRC\ WGS:/UKB_500k_WGS_aGDS --yes
+done
