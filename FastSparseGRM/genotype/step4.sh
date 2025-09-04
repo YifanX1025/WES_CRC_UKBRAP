@@ -27,7 +27,7 @@ dx run swiss-army-knife \
     " &&
     pwd && ls -la && cd /home/dnanexus/out/out && 
     # Run the divergence calculation
-    R  CMD BATCH --vanilla "--args --prefix.in chrall_pruned --file.unrels output.unrelated.unrels --prefix.out output.pca --no_pcs 20 --num_threads 24 --no_iter 15" runPCA_wrapper.R runPCA.Rout && 
+    R  CMD BATCH --vanilla "--args --prefix.in chrall_pruned --file.unrels output.unrelated.unrels --prefix.out output.pca --no_pcs 20 --num_threads 24 --no_iter 10" runPCA_wrapper.R runPCA.Rout && 
     tail -n 200 runPCA.Rout || true
   ' \
   --instance-type mem2_ssd1_v2_x32 \
