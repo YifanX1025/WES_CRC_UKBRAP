@@ -4,7 +4,7 @@
 
 ### CRC WES null model
 pheno="CRC WGS:/STAAR/phenotype_covars_combined.csv"
-path="CRC WGS:/STAAR/"
+path="CRC WGS:/STAAR/Nullmodel/"
 
 dx run CRC\ WGS:/staarpipeline \
 -ipheno_file=${pheno} \
