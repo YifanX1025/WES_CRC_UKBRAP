@@ -9,9 +9,7 @@ dx run swiss-army-knife \
   -iin="CRC WGS:/GRM/outputallsegs.txt" \
   -iin="CRC WGS:/GRM/output.divergence.div" \
   -iin="CRC WGS:/GRM/output.unrelated.unrels" \
-  -iin="CRC WGS:/GRM/output.pca.score" \
-  -iin="CRC WGS:/GRM/output.pca.eval" \
-  -iin="CRC WGS:/GRM/output.pca.evec" \
+  -iin="CRC WGS:/GRM/converted.pca.score" \
   -iin="CRC WGS:/GRM/FastSparseGRM/extdata/calcSparseGRM_wrapper.R" \
   -y --brief \
   -icmd="
@@ -28,7 +26,7 @@ dx run swiss-army-knife \
     ' &&
     pwd && ls -la && cd /home/dnanexus/out/out && 
     # Run the divergence calculation
-    R CMD BATCH --vanilla '--args --prefix.in chrall_pruned --prefix.out output.sparseGRM --file.train output.unrelated.unrels --file.score output.pca.score --file.seg output.seg --num_threads 24 --no_pcs 20 --block.size 5000 --max.related.block 5000 --KINGformat.out FALSE --degree 4' calcSparseGRM_wrapper.R calcSparseGRM.Rout && 
+    R CMD BATCH --vanilla '--args --prefix.in chrall_pruned --prefix.out converted.sparseGRM --file.train output.unrelated.unrels --file.score converted.pca.score --file.seg output.seg --num_threads 24 --no_pcs 20 --block.size 5000 --max.related.block 5000 --KINGformat.out FALSE --degree 4' calcSparseGRM_wrapper.R calcSparseGRM.Rout && 
     tail -n 200 calcSparseGRM.Rout || true
   " \
   --instance-type mem2_ssd1_v2_x32 \
