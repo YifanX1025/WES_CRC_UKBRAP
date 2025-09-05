@@ -48,11 +48,11 @@ cat("Number of individuals in phenotype file:", nrow(phenotype), "\n")
 final_data <- phenotype %>%
   inner_join(covars, by = "eid")
 
-# Alternative: Left join if you want to keep all phenotype individuals
-# final_data <- phenotype %>%
-#   left_join(covars, by = "eid")
+# Step 5: Convert eid to eid_eid format to match GRM
+final_data <- final_data %>%
+  mutate(eid = paste0(eid, "_", eid))
 
-# Step 5: Check the final combined dataset
+# Step 6: Check the final combined dataset
 cat("\nFinal combined dataset:\n")
 str(final_data)
 head(final_data)
@@ -62,12 +62,16 @@ cat("\nNumber of individuals in final dataset:", nrow(final_data), "\n")
 cat("Number of cases:", sum(final_data$case_status == 1, na.rm = TRUE), "\n")
 cat("Number of controls:", sum(final_data$case_status == 0, na.rm = TRUE), "\n")
 
-# Step 6: Export the final dataset
+# Step 7: Export the final dataset
 write.csv(final_data, "phenotype_covars_combined.csv", row.names = FALSE, quote = FALSE)
 
 # Optional: Check for any missing data
 cat("\nMissing data summary:\n")
 sapply(final_data, function(x) sum(is.na(x)))
+
+# Verify the ID format matches GRM
+cat("\nSample of final eid format (should match GRM):\n")
+head(final_data$eid)
 
 cat("\nData processing complete. Final dataset saved to 'phenotype_covars_combined.csv'\n")
 cat("Final dataset columns:", colnames(final_data), "\n")
