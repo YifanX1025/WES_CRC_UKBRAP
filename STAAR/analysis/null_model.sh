@@ -3,8 +3,8 @@
 ###### RUN NULL MODEL AND WAIT FOR IT TO COMPLETE ######
 
 ### CRC WES null model
-pheno="CRC WGS:/STAAR/phenotype_covars_combined.csv"
-path="CRC WGS:/STAAR/Nullmodel/"
+pheno="CRC\ WGS:/STAAR/phenotype_covars_combined.csv"
+path="CRC\ WGS:/STAAR/Nullmodel/"
 
 dx run CRC\ WGS:/staarpipeline \
 -ipheno_file=${pheno} \
