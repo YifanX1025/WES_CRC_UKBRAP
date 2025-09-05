@@ -3,13 +3,12 @@
 ###### RUN NULL MODEL AND WAIT FOR IT TO COMPLETE ######
 
 # Define variables with proper quoting
-pheno="CRC WGS:/STAAR/phenotype_covars_combined.csv"
-path="CRC WGS:/STAAR/Nullmodel/"
-grm_file="CRC WGS:/GRM/converted.sparseGRM.sGRM.RData"
-app_name="CRC WGS:/staarpipeline"
+pheno="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/phenotype_covars_combined.csv"
+path="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Nullmodel/"
+grm_file="project-GyJ14jjJxy674xQ2pGQ5G3K6:/GRM/converted.sparseGRM.sGRM.RData"
 
 # Run the dx command with proper quoting
-dx run "${app_name}" \
+dx run project-GyJ14jjJxy674xQ2pGQ5G3K6:/staarpipeline \
 -ipheno_file="${pheno}" \
 -igrm_file="${grm_file}" \
 -ipheno_id=eid \
