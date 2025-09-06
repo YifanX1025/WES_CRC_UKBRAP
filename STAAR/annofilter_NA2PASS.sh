@@ -11,6 +11,6 @@ for chr in {1..22}; do
     " \
     --instance-type mem1_ssd1_v2_x2 \
     --name "fix_vcf_chr${chr}" \
-    --destination "CRC WGS:/Step2_vcf_merged_500k/filtered/"
+    --destination "CRC WGS:/Step2_vcf_merged_500k/filtered/" \
     -y --brief --priority normal
 done
