@@ -155,7 +155,7 @@ dx build -f vcf2gds
 
 # Create a new folder under the project directory (Step3_gds_500k)
 
-dx cd UKB_500k_WGS:/Step3_gds_500k/filtered/
+dx cd CRC\ WGS:/Step3_gds_500k/filtered/
 
 for CHR in {1..2} {4..4} {6..6} {8..8}
 do
