@@ -10,4 +10,4 @@ dx run swiss-army-knife \
   --destination "CRC WGS:/STAAR/" \
   --yes \
   --brief \
-  --priority high
+  --priority normal
