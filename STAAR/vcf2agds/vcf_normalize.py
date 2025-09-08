@@ -62,7 +62,7 @@ def main():
         # Build bcftools commands (using 8 threads)
         bcftools_cmd1 = f"bcftools view -Ou --max-alleles 5 -T ^{diff_bed} --threads 8 {vcf_file}"
         bcftools_cmd2 = f"bcftools norm -Ou -m - -f {ref_genome} --threads 8"
-        bcftools_cmd3 = f"bcftools +fill-tags -Oz --threads 8 -- -t all -o {vcf_outfile}"
+        bcftools_cmd3 = f"bcftools +fill-tags -Oz --threads 8 -- -t all > {vcf_outfile}"
         bcftools_cmd4 = f"bcftools index -t --threads 8 {vcf_outfile}"
         
         # Chain commands
