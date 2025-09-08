@@ -197,6 +197,6 @@ do
   -igds_file=CRC\ WGS:/Step3_gds_500k/filtered/chr${CHR}.gds \
   -ichromosome=${CHR} \
   -iuse_compression=NO \
-  -ioutfile=ukb.500k.wgs.chr${CHR}.pass.annotated \
+  -ioutfile=ukb.500k.wes.chr${CHR}.pass.annotated \
   --destination=CRC\ WGS:/UKB_500k_WGS_aGDS/filtered/ --yes
 done
