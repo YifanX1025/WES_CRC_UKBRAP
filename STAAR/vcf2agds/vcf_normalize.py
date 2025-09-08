@@ -60,10 +60,10 @@ def main():
         vcf_outfile = f"c{chr_num}_norm_multi_split.vcf.gz"
         
         # Build bcftools commands (using 8 threads)
-        bcftools_cmd1 = f"bcftools view -Ou --max-alleles 5 -T ^{diff_bed} --threads 8 {vcf_file}"
-        bcftools_cmd2 = f"bcftools norm -Ou -m - -f {ref_genome} --threads 8"
-        bcftools_cmd3 = f"bcftools +fill-tags -Oz --threads 8 -- -t all > {vcf_outfile}"
-        bcftools_cmd4 = f"bcftools index -t --threads 8 {vcf_outfile}"
+        bcftools_cmd1 = f"bcftools view -Ou --max-alleles 5 -T ^{diff_bed} {vcf_file}"
+        bcftools_cmd2 = f"bcftools norm -Ou -m - -f {ref_genome}"
+        bcftools_cmd3 = f"bcftools +fill-tags -Oz -- -t all > {vcf_outfile}"
+        bcftools_cmd4 = f"bcftools index -t {vcf_outfile}"
         
         # Chain commands
         bcftools_pipeline = " | ".join([bcftools_cmd1, bcftools_cmd2, bcftools_cmd3])
@@ -80,7 +80,7 @@ def main():
         dx_input_str = ' '.join(dx_inputs)
         
         # Build dx command
-        dx_command = (f'dx run swiss-army-knife --instance-type mem1_ssd1_v2_x8 '
+        dx_command = (f'dx run swiss-army-knife --instance-type mem1_ssd1_v2_x2 '
                      f'-y --brief {dx_input_str} -icmd="{bcftools_command}" '
                      f'--destination {dx_vcf_out_path} --tag "{job_tag}" '
                      f'--name "vcf_norm_chr{chr_num}" --priority high')
