@@ -155,12 +155,12 @@ dx build -f vcf2gds
 
 # Create a new folder under the project directory (Step3_gds_500k)
 
-dx cd UKB_500k_WGS:/Step3_gds_500k
+dx cd UKB_500k_WGS:/Step3_gds_500k/filtered/
 
 for CHR in {1..2} {4..4} {6..6} {8..8}
 do
   dx run CRC\ WGS:/vcf2gds \
-    -ivcf_file=CRC\ WGS:/Step2_vcf_merged_500k/ukb23157_c${CHR}_merged_v1_staar_trimmed.vcf.gz \
+    -ivcf_file=CRC\ WGS:/Step2_vcf_merged_500k/filtered/c${CHR}_norm_multi_split.vcf.gz \
     -igds_filename=chr${CHR}.gds \
     -iparallel=30 \
     --priority high \
@@ -171,7 +171,7 @@ done
 for CHR in {3..3} {5..5} {7..7} {9..22}
 do
   dx run CRC\ WGS:/vcf2gds \
-    -ivcf_file=CRC\ WGS:/Step2_vcf_merged_500k/ukb23157_c${CHR}_merged_v1_staar_trimmed.vcf.gz \
+    -ivcf_file=CRC\ WGS:/Step2_vcf_merged_500k/filtered/c${CHR}_norm_multi_split.vcf.gz \
     -igds_filename=chr${CHR}.gds \
     -iparallel=16 \
     --priority high \
@@ -194,9 +194,9 @@ dx build -f favorannotator-rap
 for CHR in {1..22}
 do
   dx run CRC\ WGS:/favorannotator \
-  -igds_file=CRC\ WGS:/Step3_gds_500k/chr${CHR}.gds \
+  -igds_file=CRC\ WGS:/Step3_gds_500k/filtered/chr${CHR}.gds \
   -ichromosome=${CHR} \
   -iuse_compression=NO \
   -ioutfile=ukb.500k.wgs.chr${CHR}.pass.annotated \
-  --destination=CRC\ WGS:/UKB_500k_WGS_aGDS --yes
+  --destination=CRC\ WGS:/UKB_500k_WGS_aGDS/filtered/ --yes
 done
