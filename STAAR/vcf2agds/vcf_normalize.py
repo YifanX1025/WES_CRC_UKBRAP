@@ -83,7 +83,7 @@ def main():
         dx_command = (f'dx run swiss-army-knife --instance-type mem1_ssd1_v2_x8 '
                      f'-y --brief {dx_input_str} -icmd="{bcftools_command}" '
                      f'--destination {dx_vcf_out_path} --tag "{job_tag}" '
-                     f'--name "vcf_norm_chr{chr_num}"')
+                     f'--name "vcf_norm_chr{chr_num}" --priority high')
         
         # Submit job
         job_id = run_dx_command(dx_command, chr_num)
