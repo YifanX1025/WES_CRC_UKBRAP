@@ -81,7 +81,7 @@ for chrom in chromosomes:
         print(f"Submitting job for chromosome {chrom_str}...")
 
         # Execute the command - using ! for Jupyter notebook execution
-        !{dx_command}
+        subprocess.run(dx_command, shell=True, check=True)
 
         print(f"✅ Successfully submitted chromosome {chrom_str}")
         files_processed.append(chrom_str)
