@@ -96,7 +96,7 @@ for chrom in chromosomes:
             f"--plugin AlphaMissense,file=/plugins/AlphaMissense/AlphaMissense_hg38.tsv.gz "
             f"--plugin pLI "
             f"--plugin SpliceAI,snv=/plugins/SpliceAI/spliceai_scores.raw.snv.hg38.vcf.gz,indel=/plugins/SpliceAI/spliceai_scores.raw.indel.hg38.vcf.gz "
-            f"--buffer_size 5000 "
+            f"--buffer_size 2000 "
             f"--verbose && "
 
             f"echo \\\"Success! Output files:\\\" && "
@@ -123,13 +123,13 @@ for chrom in chromosomes:
             f'-icmd="{vep_cmd}" '
             f'--destination {dx_vep_out_path} '
             f'--tag "{tag_str}" '
-            f'--name "VEP_chr{chrom_str}_fork8_buffer5000" '
+            f'--name "VEP_chr{chrom_str}_fork8_buffer2000" '
             f'--property chromosome={chrom_str}'
         )
 
 
         print("Instance type: mem3_ssd3_x8")
-        print("✅ Root user, 8 fork, 5000 buffer, no stats")
+        print("✅ Root user, 8 fork, 2000 buffer, no stats")
         print("✅ Direct /tmp output (no copying)")
         print("✅ Clean mount strategy")
         print("=" * 60)
