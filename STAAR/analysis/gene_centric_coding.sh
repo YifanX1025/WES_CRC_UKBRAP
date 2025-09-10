@@ -1,6 +1,6 @@
 # !/bin/bash
 ### CRC WES unconditional analysis for gene-centric coding
-nullmodel="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Nullmodel/crc_wes_nullmodel.Rdata"
+nullmodel="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Nullmodel/crc_wes_nullmodel_fixed.Rdata"
 path="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Gene_Centric_Coding/"
 
 for CHR in {1..22}; do
