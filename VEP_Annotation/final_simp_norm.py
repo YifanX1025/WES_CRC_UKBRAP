@@ -129,7 +129,7 @@ for chrom in chromosomes:
 
 
         print("Instance type: mem3_ssd3_x8")
-        print("✅ Root user, 8 fork, 2000 buffer, no stats")
+        print("✅ Root user, 8 fork, 5000 buffer, no stats")
         print("✅ Direct /tmp output (no copying)")
         print("✅ Clean mount strategy")
         print("=" * 60)
