@@ -7,7 +7,7 @@ path="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Single/"
 for CHR in {1..22}; do
 dx run project-GyJ14jjJxy674xQ2pGQ5G3K6:/staarpipeline --priority=low \
 -inullobj_file=${nullmodel} \
--iagds_file=project-GyJ14jjJxy674xQ2pGQ5G3K6:/UKB_500k_WGS_aGDS/ukb.500k.wgs.chr${CHR}.pass.annotated.gds \
+-iagds_file=project-GyJ14jjJxy674xQ2pGQ5G3K6:/UKB_500k_WGS_aGDS/filtered/ukb.500k.wes.chr${CHR}.pass.annotated.gds \
 -itest_type="Single" \
 -iuser_cores=16 \
 -ioutfile=crc_wes_single_chr${CHR} \
