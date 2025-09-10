@@ -1,37 +1,11 @@
 #!/usr/bin/env python3
 
+
 from io import StringIO
 import numpy as np
 import pandas as pd
 from subprocess import call
 
-# Configuration parameters
-
-tag_str = 'VEP_WES_ANNOTATION'  # DNAnexus job tag
-
-# Project paths
-project_path = 'project-GyJ14jjJxy674xQ2pGQ5G3K6:/'
-
-# Input VCF path (your merged files)
-dx_vcf_path = project_path + "Step2_vcf_merged_500k_simplified_normalised/"
-
-# Output VEP annotation path
-dx_vep_out_path = project_path + "Step2_vcf_merged_500k_simplified_normalised/"
-
-# Docker image path
-dx_image_path = project_path + "vep/images/"
-
-# Define chromosomes to process (1-22)
-chromosomes = list(range(1, 23))
-
-print(f"Processing chromosome {chromosomes}")
-
-#%%
-from io import StringIO
-import numpy as np
-import pandas as pd
-from subprocess import call
-#%%
 # Configuration parameters
 
 tag_str = 'VEP_WES_ANNOTATION'  # DNAnexus job tag
@@ -48,12 +22,12 @@ dx_vep_out_path = project_path + "Step2_vcf_merged_500k_simplified_normalised/fi
 # Docker image path
 dx_image_path = project_path + "vep/images/"
 
-#%%
+
 # Define chromosomes to process (1-22)
 chromosomes = list(range(1, 23))
 
 print(f"Processing chromosome {chromosomes}")
-#%%
+
 # Process each chromosome
 chromosomes_processed = []
 chromosomes_failed = []
