@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Simplify VCF files for chromosomes 1-22 using swiss-army-knife
 import subprocess
 
