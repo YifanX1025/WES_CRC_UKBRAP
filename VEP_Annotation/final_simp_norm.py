@@ -4,7 +4,7 @@
 from io import StringIO
 import numpy as np
 import pandas as pd
-from subprocess import call
+from subprocess import call, run
 
 # Configuration parameters
 
