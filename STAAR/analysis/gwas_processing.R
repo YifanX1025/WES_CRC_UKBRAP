@@ -68,3 +68,52 @@ cat("- Variants with valid p-values:", sum(!is.na(gwas_data$P_VALUE_numeric)), "
 cat("- Variants with p < 5e-8:", nrow(significant_variants), "\n")
 cat("- Output file:", output_filename, "\n")
 cat("- Columns in output: SNPS \n")
+
+# R code to clean and format known variant list
+
+# Read the original file
+varlist <- read.csv("known_varlist_rsID.csv", header = TRUE, stringsAsFactors = FALSE)
+
+# Look at the data structure
+head(varlist)
+str(varlist)
+
+# Clean the SNPS column
+cleaned_snps <- varlist$SNPS
+
+# 1. Remove entries with semicolons and "x" - split and keep first variant only
+cleaned_snps <- gsub(";.*", "", cleaned_snps)  # Remove everything after semicolon
+cleaned_snps <- gsub(" x .*", "", cleaned_snps)  # Remove everything after " x "
+
+# 2. Remove any leading/trailing whitespace
+cleaned_snps <- trimws(cleaned_snps)
+
+# 3. Filter to keep only valid rsIDs and chr:pos formats
+# Valid rsIDs start with "rs" followed by numbers
+# Valid chr:pos format: chr followed by number, colon, then position
+valid_pattern <- "^(rs[0-9]+|chr[0-9XY]+:[0-9]+)$"
+valid_snps <- cleaned_snps[grepl(valid_pattern, cleaned_snps)]
+
+# 4. Remove duplicates
+unique_snps <- unique(valid_snps)
+
+# 5. Sort for better organization
+sorted_snps <- sort(unique_snps)
+
+# Create cleaned dataframe
+cleaned_varlist <- data.frame(SNPS = sorted_snps, stringsAsFactors = FALSE)
+
+# Print summary
+cat("Original variants:", length(cleaned_snps), "\n")
+cat("Valid variants after cleaning:", nrow(cleaned_varlist), "\n")
+cat("Removed variants:", length(cleaned_snps) - nrow(cleaned_varlist), "\n")
+
+# Show examples of what was removed
+invalid_snps <- cleaned_snps[!grepl(valid_pattern, cleaned_snps)]
+if(length(invalid_snps) > 0) {
+  cat("\nExamples of removed invalid entries:\n")
+  print(head(invalid_snps, 10))
+}
+
+# Write cleaned file
+write.csv(cleaned_varlist, "known_varlist_rsID_cleaned.csv", row.names = FALSE, quote = FALSE)
