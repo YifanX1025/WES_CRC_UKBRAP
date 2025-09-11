@@ -11,6 +11,7 @@ dx run project-GyJ14jjJxy674xQ2pGQ5G3K6:/staarpipeline --priority=low \
 -itest_type="Gene_Centric_Coding" \
 -iuser_cores=40 \
 -ioutfile=crc_wes_gene_centric_coding_chr${CHR} \
+-iqc_label_dir=annotation/info/QC_label \
 -iannotation_dir=annotation/info/FunctionalAnnotation \
 --destination=${path} --instance-type=mem3_ssd1_v2_x48 --yes
 done
