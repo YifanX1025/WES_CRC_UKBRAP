@@ -31,8 +31,7 @@ gwas_data$P_VALUE_numeric <- ifelse(is.na(gwas_data$P_VALUE_numeric) & !is.na(gw
 significant_variants <- gwas_data %>%
   filter(!is.na(P_VALUE_numeric) & P_VALUE_numeric < 5e-8) %>%
   filter(!is.na(SNPS) & SNPS != "" & SNPS != "NR") %>%  # Remove rows with missing or "NR" SNPs
-  select(SNPS, CHR_ID) %>%
-  rename(CHR = CHR_ID) %>%
+  select(SNPS) %>%
   distinct()  # Remove duplicates
 
 # Display results
@@ -45,7 +44,6 @@ print(head(significant_variants, 10))
 # Check for any missing values
 cat("\nMissing values check:\n")
 cat("Missing SNPS:", sum(is.na(significant_variants$SNPS)), "\n")
-cat("Missing CHR:", sum(is.na(significant_variants$CHR)), "\n")
 
 # Write the filtered data to CSV file
 output_filename <- "known_varlist_rsID.csv"
@@ -72,4 +70,4 @@ cat("- Total variants in dataset:", nrow(gwas_data), "\n")
 cat("- Variants with valid p-values:", sum(!is.na(gwas_data$P_VALUE_numeric)), "\n")
 cat("- Variants with p < 5e-8:", nrow(significant_variants), "\n")
 cat("- Output file:", output_filename, "\n")
-cat("- Columns in output: SNPS, CHR\n")
+cat("- Columns in output: SNPS \n")
