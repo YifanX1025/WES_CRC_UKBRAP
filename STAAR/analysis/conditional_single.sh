@@ -1,30 +1,30 @@
 # !/bin/bash
 nullmodel="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Nullmodel/crc_wes_nullmodel_fixed.Rdata"
-path="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Conditional_Single/"
+path="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Conditional_Single/variant/variant/"
 
 dx run CRC\ WGS:/staarpipelinesummary_varset \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr1.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr2.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr3.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr4.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr5.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr6.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr7.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr8.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr9.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr10.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr11.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr12.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr13.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr14.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr15.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr16.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr17.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr18.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr19.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr20.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr21.Rdata \
--iinfiles=CRC\ WGS:/STAAR/Single/crc_wes_single_chr22.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr1.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr2.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr3.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr4.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr5.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr6.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr7.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr8.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr9.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr10.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr11.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr12.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr13.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr14.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr15.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr16.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr17.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr18.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr19.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr20.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr21.Rdata \
+-iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr22.Rdata \
 -iknown_varlist_rsID=CRC\ WGS:/STAAR/known_varlist_rsID.csv \
 -inullobj_file=${nullmodel} \
 -iagds_files=CRC\ WGS:/UKB_500k_WGS_aGDS/filtered/ukb.500k.wes.chr1.pass.annotated.gds \
@@ -54,6 +54,7 @@ dx run CRC\ WGS:/staarpipelinesummary_varset \
 -itest_type=Single \
 -iinfile_prefix=crc_wes_single_chr \
 -ioutfile=crc_wes \
+-ivariant_type="variant" \
 -iqc_label_dir=annotation/info/QC_label \
 -iannotation_dir=annotation/info/FunctionalAnnotation \
 --destination=${path} --instance-type="mem2_ssd1_v2_x32" --yes
