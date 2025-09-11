@@ -1,6 +1,6 @@
 # !/bin/bash
 nullmodel="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Nullmodel/crc_wes_nullmodel_fixed.Rdata"
-path="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Conditional_Single/variant/variant/"
+path="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Conditional_Single/variant/"
 
 dx run CRC\ WGS:/staarpipelinesummary_varset \
 -iinfiles=CRC\ WGS:/STAAR/Single/variant/crc_wes_single_chr1.Rdata \
