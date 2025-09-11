@@ -2,7 +2,7 @@
 
 ### CRC WES unconditional analysis for single
 nullmodel="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Nullmodel/crc_wes_nullmodel_fixed.Rdata"
-path="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Single/"
+path="project-GyJ14jjJxy674xQ2pGQ5G3K6:/STAAR/Single/variant/"
 
 for CHR in {1..22}; do
 dx run project-GyJ14jjJxy674xQ2pGQ5G3K6:/staarpipeline --priority=low \
