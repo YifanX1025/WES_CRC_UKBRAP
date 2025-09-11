@@ -54,6 +54,7 @@ dx run CRC\ WGS:/staarpipelinesummary_varset \
 -itest_type=Single \
 -iinfile_prefix=crc_wes_single_chr \
 -ioutfile=crc_wes \
+-imin_maf_adj=0.005 \
 -ivariant_type="variant" \
 -iqc_label_dir=annotation/info/QC_label \
 -iannotation_dir=annotation/info/FunctionalAnnotation \
