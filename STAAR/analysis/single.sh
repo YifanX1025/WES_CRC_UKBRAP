@@ -12,5 +12,6 @@ dx run project-GyJ14jjJxy674xQ2pGQ5G3K6:/staarpipeline --priority=low \
 -iuser_cores=16 \
 -ioutfile=crc_wes_single_chr${CHR} \
 -iqc_label_dir=annotation/info/QC_label \
+-ivariant_type="variant" \
 --destination=${path} --instance-type="mem3_ssd1_v2_x64" --yes
 done
