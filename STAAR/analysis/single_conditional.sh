@@ -54,5 +54,6 @@ dx run CRC\ WGS:/staarpipelinesummary_varset \
 -itest_type=Single \
 -iinfile_prefix=crc_wes_single_chr \
 -ioutfile=crc_wes \
+-iqc_label_dir=annotation/info/QC_label \
 -iannotation_dir=annotation/info/FunctionalAnnotation \
 --destination=${path} --instance-type="mem2_ssd1_v2_x32" --yes
